@@ -8,6 +8,7 @@ public class AdventurerAnimation : MonoBehaviour {
 	bool facingRight = true;
 	private Rigidbody2D rb;
 	public float jumpForce = 700f;
+	bool doubleJump = false;
 
 	Animator anim;
 	bool grounded = false;
@@ -21,19 +22,28 @@ public class AdventurerAnimation : MonoBehaviour {
 	}
 	
 	// Whenever you are using physics, you want to use FixedUpdate, not Update
-	void FixedUpdate () {
+	void FixedUpdate ()
+	{
 //		lower force and lower gravity can help you adjust gravity and jumps later
-		grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-		anim.SetBool("Ground", grounded);
-		anim.SetFloat("vSpeed", rb.velocity.y);
+		grounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
+		anim.SetBool ("Ground", grounded);
 
-		float move = Input.GetAxis("Horizontal");
+		if (grounded) {
+			doubleJump = false;
+		}
+
+		anim.SetFloat ("vSpeed", rb.velocity.y);
+
+		float move = Input.GetAxis ("Horizontal");
 //		float jumpY = Input.GetAxis("Vertical");
 
-		anim.SetFloat("Speed", Mathf.Abs(move));
+		anim.SetFloat ("Speed", Mathf.Abs (move));
 
 		rb.velocity = new Vector2 (move * maxSpeed, rb.velocity.y);
 
+		if (!grounded) {
+			return;
+		}
 //		HandleJumpAndFall();
 
 		if (move > 0 &&! facingRight) {
@@ -44,9 +54,13 @@ public class AdventurerAnimation : MonoBehaviour {
 	}
 
 	void Update() {
-		if (grounded && Input.GetKeyDown(KeyCode.Space)){
+		if ((grounded || !doubleJump) && Input.GetKeyDown(KeyCode.Space)){
 			anim.SetBool("Ground", false);
 			rb.AddForce(new Vector2(0, jumpForce));
+
+			if (!doubleJump && !grounded){
+				doubleJump = true;
+			}
 		}
 	}
 
