@@ -7,14 +7,23 @@ public class AdventurerAnimation : MonoBehaviour {
 	public float maxSpeed = 10f;
 	bool facingRight = true;
 	private Rigidbody2D rb;
-	public float jumpForce = 700f;
-	bool doubleJump = false;
+
+//	bool doubleJump = false;
 
 	Animator anim;
-	bool grounded = false;
-	public Transform groundCheck;
-	public float groundRadius = 0.2f;
+
+//	bool grounded = false;
+
+	[SerializeField]
+	public Transform[] groundCheck;
+	public float groundRadius;
+//	private float groundRadius = 2f;
 	public LayerMask whatIsGround;
+	private bool isGrounded;
+	private bool jump;
+	private float jumpForce = 700f;
+	private bool airControl;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
@@ -23,45 +32,70 @@ public class AdventurerAnimation : MonoBehaviour {
 	
 	// Whenever you are using physics, you want to use FixedUpdate, not Update
 	void FixedUpdate ()
-	{
+	{	
+		
 //		lower force and lower gravity can help you adjust gravity and jumps later
-		grounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
-		anim.SetBool ("Ground", grounded);
+//		grounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
+//		anim.SetBool ("Ground", grounded);
 
-		if (grounded) {
-			doubleJump = false;
+//		if (grounded) {
+//			doubleJump = false;
+//		}
+
+//		anim.SetFloat ("vSpeed", rb.velocity.y);
+		if (rb.velocity.y < 0){
+			anim.SetBool("landing", true);
 		}
 
-		anim.SetFloat ("vSpeed", rb.velocity.y);
-
+//		x-axis
 		float move = Input.GetAxis ("Horizontal");
-//		float jumpY = Input.GetAxis("Vertical");
 
+		isGrounded = IsGrounded();
+//		Start running
 		anim.SetFloat ("Speed", Mathf.Abs (move));
-
-		rb.velocity = new Vector2 (move * maxSpeed, rb.velocity.y);
-
-		if (!grounded) {
-			return;
+		if (isGrounded || airControl){
+			rb.velocity = new Vector2 (move * maxSpeed, rb.velocity.y);
 		}
-//		HandleJumpAndFall();
+
+
+//		if (isGrounded || airControl) {
+//			return;
+//		}
 
 		if (move > 0 &&! facingRight) {
 			Flip();
 		} else if (move < 0 && facingRight) {
 			Flip();
 		}
+
+
+		HandleLayers();
+		ResetValues();
+
 	}
 
-	void Update() {
-		if ((grounded || !doubleJump) && Input.GetKeyDown(KeyCode.Space)){
-			anim.SetBool("Ground", false);
-			rb.AddForce(new Vector2(0, jumpForce));
-
-			if (!doubleJump && !grounded){
-				doubleJump = true;
-			}
+	void Update ()
+	{	
+		if (Input.GetKeyDown(KeyCode.Space)){
+			jump = true;
 		}
+
+		if (isGrounded && jump){
+			isGrounded = false;
+			rb.AddForce(new Vector2(0, jumpForce));
+			anim.SetTrigger("jump");
+		}
+//		if (grounded) {
+//			anim.SetBool("Ground", false);
+//		}
+//		if ((grounded || !doubleJump) && Input.GetKeyDown(KeyCode.Space)){
+//			anim.SetBool("Ground", false);
+//			rb.AddForce(new Vector2(0, jumpForce));
+//
+//			if (!doubleJump && !grounded){
+//				doubleJump = true;
+//			}
+//		}
 	}
 
 	void Flip () {
@@ -71,14 +105,43 @@ public class AdventurerAnimation : MonoBehaviour {
 		transform.localScale = theScale;
 	}
 
-	void HandleJumpAndFall ()
+//	void HandleJumpAndFall ()
+//	{
+//		if (rb.velocity.y > 0) {
+//			anim.SetInteger("State", 3);
+//		} else {
+//			anim.SetInteger("State", 1);
+//		}
+//	}
+
+	private void HandleLayers ()
 	{
-		if (rb.velocity.y > 0) {
-			anim.SetInteger("State", 3);
+		if (!isGrounded) {
+			anim.SetLayerWeight(1, 1);
 		} else {
-			anim.SetInteger("State", 1);
+			anim.SetLayerWeight(1, 0);
 		}
 	}
 
+	private bool IsGrounded ()
+	{
+//		are you falling or on the ground?
+		if (rb.velocity.y <= 0) {
+			foreach (Transform point in groundCheck) {
+				Collider2D[] colliders = Physics2D.OverlapCircleAll (point.position, groundRadius, whatIsGround);
+				for (int i = 0; i < colliders.Length; i++) {
+					if (colliders[i].gameObject != gameObject) {
+						anim.ResetTrigger("jump");
+						anim.SetBool("landing", false);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
+	private void ResetValues() {
+		jump = false;
+	}
 }
