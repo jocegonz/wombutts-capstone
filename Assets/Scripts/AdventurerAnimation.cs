@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//figure out aircontrol
 public class AdventurerAnimation : MonoBehaviour {
 
 	public float maxSpeed = 10f;
@@ -22,7 +22,7 @@ public class AdventurerAnimation : MonoBehaviour {
 	private bool isGrounded;
 	private bool jump;
 	private float jumpForce = 700f;
-	private bool airControl;
+	public bool airControl;
 
 	// Use this for initialization
 	void Start () {
