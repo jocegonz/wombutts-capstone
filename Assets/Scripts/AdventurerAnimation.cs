@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//figure out aircontrol
+
 public class AdventurerAnimation : MonoBehaviour {
 
 	public float maxSpeed = 10f;
@@ -17,7 +17,6 @@ public class AdventurerAnimation : MonoBehaviour {
 	[SerializeField]
 	public Transform[] groundCheck;
 	public float groundRadius;
-//	private float groundRadius = 2f;
 	public LayerMask whatIsGround;
 	private bool isGrounded;
 	private bool jump;
@@ -55,6 +54,13 @@ public class AdventurerAnimation : MonoBehaviour {
 		anim.SetFloat ("Speed", Mathf.Abs (move));
 		if (isGrounded || airControl){
 			rb.velocity = new Vector2 (move * maxSpeed, rb.velocity.y);
+//			print("the move is");
+//			print(move);
+//			print("the maxSpeed is");
+//			print(maxSpeed);
+//			print("the y is");
+//			print(rb.velocity.y);
+
 		}
 
 
