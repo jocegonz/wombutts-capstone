@@ -3,27 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySideToSide : MonoBehaviour {
-	public int EnemySpeed;
-	public int xMoveDirection;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(xMoveDirection, 0));
-		gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(xMoveDirection, 0) * EnemySpeed;
-		if (hit.distance < 0.7){
-			Flip();
-		}
-	}
-	void Flip ()
-	{
-		if (xMoveDirection > 0) {
-			xMoveDirection = -1;
-		} else {
-			xMoveDirection = 1;
-		}
-	}
+    public int EnemySpeed;
+    public int xMoveDirection;
+
+    private Rigidbody2D body;
+    public Rigidbody2D Body {
+        get{ 
+            this.body = this.body ?? GetComponent<Rigidbody2D>();
+            return this.body;
+        }
+    } 
+    void FixedUpdate() {
+		this.Body.velocity = new Vector2(xMoveDirection, 0) * EnemySpeed;
+    }
+
+    void OnCollisionEnter2D (Collision2D collision) {
+        Debug.Log("collision");
+        if (collision.gameObject.tag != "Player") {
+            Flip();
+
+        }
+    }
+
+
+    void Flip ()
+    {
+        if (xMoveDirection > 0) {
+            xMoveDirection = -1;
+        } else {
+            xMoveDirection = 1;
+        }
+    }
+
+
 }
