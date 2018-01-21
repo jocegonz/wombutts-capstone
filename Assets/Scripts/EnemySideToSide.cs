@@ -13,21 +13,40 @@ public class EnemySideToSide : MonoBehaviour {
             return this.body;
         }
     } 
+    //damage script
+    private AdventurerAnimation player;
+
+    void Start () {
+    	player = GameObject.FindGameObjectWithTag("Player").GetComponent<AdventurerAnimation>();
+    }
+
     void FixedUpdate() {
 		this.Body.velocity = new Vector2(xMoveDirection, 0) * EnemySpeed;
     }
 
     void OnCollisionEnter2D (Collision2D collision) {
-        Debug.Log("collision");
-        if (collision.gameObject.tag != "Player") {
+//        if (collision.gameObject.tag != "Player") {
             Flip();
+//        }
 
+		if (collision.gameObject.tag == "Player") {
+        	player.Damage(1);
+        	StartCoroutine(player.Knockback(0.5f, 350, player.transform.position));
         }
     }
 
+	void OnTriggerEnter2D (Collider2D trigger) {
+//        if (trigger.gameObject.tag != "Player") {
+            Flip();
+//        }
 
-    void Flip ()
-    {
+		if (trigger.gameObject.tag == "Player") {
+        	player.Damage(1);
+        	StartCoroutine(player.Knockback(0.5f, 350, player.transform.position));
+        }
+    }
+
+    void Flip (){
         if (xMoveDirection > 0) {
             xMoveDirection = -1;
         } else {

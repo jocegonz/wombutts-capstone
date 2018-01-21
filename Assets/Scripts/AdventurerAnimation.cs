@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class AdventurerAnimation : MonoBehaviour {
 
+	private LevelManager levelManager;
+
+	//ANIMATION
 	public float maxSpeed = 10f;
 	bool facingRight = true;
 	private Rigidbody2D rb;
 
-//	bool doubleJump = false;
-
 	Animator anim;
-
-//	bool grounded = false;
 
 	[SerializeField]
 	public Transform[] groundCheck;
@@ -22,24 +21,24 @@ public class AdventurerAnimation : MonoBehaviour {
 	private bool jump;
 	private float jumpForce = 700f;
 	public bool airControl;
+	//END ANIMATION
+
+	//HEALTH
+	public int currentHealth;
+	public int maxHealth = 5;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
+
+		levelManager = FindObjectOfType<LevelManager>(); 
+		currentHealth = maxHealth;
 	}
 	
 	// Whenever you are using physics, you want to use FixedUpdate, not Update
 	void FixedUpdate ()
 	{	
-		
-//		lower force and lower gravity can help you adjust gravity and jumps later
-//		grounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
-//		anim.SetBool ("Ground", grounded);
-
-//		if (grounded) {
-//			doubleJump = false;
-//		}
 
 //		anim.SetFloat ("vSpeed", rb.velocity.y);
 		if (rb.velocity.y < 0){
@@ -54,19 +53,7 @@ public class AdventurerAnimation : MonoBehaviour {
 		anim.SetFloat ("Speed", Mathf.Abs (move));
 		if (isGrounded || airControl){
 			rb.velocity = new Vector2 (move * maxSpeed, rb.velocity.y);
-//			print("the move is");
-//			print(move);
-//			print("the maxSpeed is");
-//			print(maxSpeed);
-//			print("the y is");
-//			print(rb.velocity.y);
-
 		}
-
-
-//		if (isGrounded || airControl) {
-//			return;
-//		}
 
 		if (move > 0 &&! facingRight) {
 			Flip();
@@ -91,17 +78,15 @@ public class AdventurerAnimation : MonoBehaviour {
 			rb.AddForce(new Vector2(0, jumpForce));
 			anim.SetTrigger("jump");
 		}
-//		if (grounded) {
-//			anim.SetBool("Ground", false);
-//		}
-//		if ((grounded || !doubleJump) && Input.GetKeyDown(KeyCode.Space)){
-//			anim.SetBool("Ground", false);
-//			rb.AddForce(new Vector2(0, jumpForce));
-//
-//			if (!doubleJump && !grounded){
-//				doubleJump = true;
-//			}
-//		}
+
+		if (currentHealth > maxHealth) {
+			currentHealth = maxHealth;
+		}
+
+		if (currentHealth <= 0) {
+			zeroHearts();
+		}
+
 	}
 
 	void Flip () {
@@ -110,18 +95,27 @@ public class AdventurerAnimation : MonoBehaviour {
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+	void zeroHearts(){
+		levelManager.LoadLevel("Lose");
+	}
 
-//	void HandleJumpAndFall ()
-//	{
-//		if (rb.velocity.y > 0) {
-//			anim.SetInteger("State", 3);
-//		} else {
-//			anim.SetInteger("State", 1);
-//		}
-//	}
+	public void Damage(int dmg) {
+		currentHealth -= dmg;
+	}
 
-	private void HandleLayers ()
-	{
+	public IEnumerator Knockback (float knockDuration, float knockPower, Vector3 knockDirection) {
+		float timer = 0;
+
+		while (knockDuration > timer) {
+			timer += Time.deltaTime;
+
+			rb.AddForce(new Vector3(knockDirection.x * -100, knockDirection.y * knockPower, transform.position.z));
+		}
+
+		yield return 0;
+	}
+
+	private void HandleLayers () {
 		if (!isGrounded) {
 			anim.SetLayerWeight(1, 1);
 		} else {
@@ -129,8 +123,7 @@ public class AdventurerAnimation : MonoBehaviour {
 		}
 	}
 
-	private bool IsGrounded ()
-	{
+	private bool IsGrounded () {
 //		are you falling or on the ground?
 		if (rb.velocity.y <= 0) {
 			foreach (Transform point in groundCheck) {
@@ -150,4 +143,6 @@ public class AdventurerAnimation : MonoBehaviour {
 	private void ResetValues() {
 		jump = false;
 	}
+
+
 }
