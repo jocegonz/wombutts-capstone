@@ -34,6 +34,7 @@ public class AdventurerAnimation : MonoBehaviour {
 
 		levelManager = FindObjectOfType<LevelManager>(); 
 		currentHealth = maxHealth;
+
 	}
 	
 	// Whenever you are using physics, you want to use FixedUpdate, not Update
@@ -111,7 +112,7 @@ public class AdventurerAnimation : MonoBehaviour {
 //		anim.SetBool("hurt", true);
 //		gameObject.GetComponent<Animation>().Play("hurt");
 
-//		gameObject.GetComponent<Animation>(animation["hurt"]).wrapMode = WrapMode.Once;
+//		gameObject.GetComponent<Animation>().wrapMode = WrapMode.Once;
 		gameObject.GetComponent<Animation>().Play("hurt");
 		print("Animation for hurt played");
 	}
