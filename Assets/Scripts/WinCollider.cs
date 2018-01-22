@@ -16,8 +16,8 @@ public class WinCollider : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag("Player").GetComponent<AdventurerAnimation>();
 	}
 	IEnumerator OnCollisionEnter2D(Collision2D collision) {
-		print("Collision");		
-		player.GetComponent<Animator>().Play("winning");
+			
+//		player.GetComponent<Animator>().Play("winning");
 		gameObject.GetComponent<Animation>().Play("HeartItemWon");
 
 		yield return new WaitForSeconds(5f);

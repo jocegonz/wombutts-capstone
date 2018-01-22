@@ -31,7 +31,7 @@ public class EnemySideToSide : MonoBehaviour {
 
 		if (collision.gameObject.tag == "Player") {
         	player.Damage(1);
-        	StartCoroutine(player.Knockback(0.5f, 350, player.transform.position));
+        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
         }
     }
 
@@ -42,7 +42,7 @@ public class EnemySideToSide : MonoBehaviour {
 
 		if (trigger.gameObject.tag == "Player") {
         	player.Damage(1);
-        	StartCoroutine(player.Knockback(0.5f, 350, player.transform.position));
+        	StartCoroutine(player.Knockback(0.01f, 350, player.transform.position));
         }
     }
 

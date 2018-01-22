@@ -72,21 +72,25 @@ public class AdventurerAnimation : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space)){
 			jump = true;
 		}
-
 		if (isGrounded && jump){
 			isGrounded = false;
 			rb.AddForce(new Vector2(0, jumpForce));
 			anim.SetTrigger("jump");
 		}
-
 		if (currentHealth > maxHealth) {
 			currentHealth = maxHealth;
 		}
-
 		if (currentHealth <= 0) {
 			zeroHearts();
 		}
+	}
 
+	void OnCollisionEnter2D(Collision2D collision) {
+		
+		if (collision.gameObject.tag == "Win") {
+			print("Collision is happening with win item");	
+			anim.SetBool("won", true);
+		}
 	}
 
 	void Flip () {
