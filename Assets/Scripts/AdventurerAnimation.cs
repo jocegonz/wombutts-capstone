@@ -91,6 +91,9 @@ public class AdventurerAnimation : MonoBehaviour {
 			print("Collision is happening with win item");	
 			anim.SetBool("won", true);
 		}
+//		if (collision.gameObject.tag == "Enemy") {
+//			anim.SetBool("hurt", true);
+//		}
 	}
 
 	void Flip () {
@@ -105,6 +108,12 @@ public class AdventurerAnimation : MonoBehaviour {
 
 	public void Damage(int dmg) {
 		currentHealth -= dmg;
+//		anim.SetBool("hurt", true);
+//		gameObject.GetComponent<Animation>().Play("hurt");
+
+//		gameObject.GetComponent<Animation>(animation["hurt"]).wrapMode = WrapMode.Once;
+		gameObject.GetComponent<Animation>().Play("hurt");
+		print("Animation for hurt played");
 	}
 
 	public IEnumerator Knockback (float knockDuration, float knockPower, Vector3 knockDirection) {
