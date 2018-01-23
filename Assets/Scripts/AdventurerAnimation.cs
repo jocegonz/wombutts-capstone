@@ -7,7 +7,8 @@ public class AdventurerAnimation : MonoBehaviour {
 	private LevelManager levelManager;
 	public bool isInvincible = false;
 
-	private bool colliding = false;
+//	public AudioSource hurt;
+
 	//ANIMATION
 	public float maxSpeed = 10f;
 	bool facingRight = true;
@@ -64,7 +65,6 @@ public class AdventurerAnimation : MonoBehaviour {
 			Flip();
 		}
 
-
 		HandleLayers();
 		ResetValues();
 
@@ -75,11 +75,15 @@ public class AdventurerAnimation : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space)){
 			jump = true;
 		}
+
+
 		if (isGrounded && jump){
 			isGrounded = false;
 			rb.AddForce(new Vector2(0, jumpForce));
 			anim.SetTrigger("jump");
 		}
+
+
 		if (currentHealth > maxHealth) {
 			currentHealth = maxHealth;
 		}
@@ -94,10 +98,11 @@ public class AdventurerAnimation : MonoBehaviour {
 			print("Collision is happening with win item");	
 			anim.SetBool("won", true);
 		}
-		if (collision.gameObject.tag == "Tiles") {
-			print("hitting tiles");
-		}
+//		if (collision.gameObject.tag == "Enemy") {
+//			AudioSource.PlayClipAtPoint (hurt, transform.position);
+//		}
 	}
+
 
 	void Flip () {
 		facingRight =! facingRight;
