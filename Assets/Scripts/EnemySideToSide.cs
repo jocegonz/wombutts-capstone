@@ -29,10 +29,20 @@ public class EnemySideToSide : MonoBehaviour {
             Flip();
 //        }
 
+
 		if (collision.gameObject.tag == "Player") {
-        	player.Damage(1);
-        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
+			if (!player.isInvincible) {
+				player.isInvincible = true;
+	        	player.Damage(1);
+	        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
+	        	Invoke("notInvincible", 0.5f);
+
+			}
         }
+    }
+
+    void notInvincible() {
+    	player.isInvincible = false;
     }
 
 	void OnTriggerEnter2D (Collider2D trigger) {
@@ -41,8 +51,13 @@ public class EnemySideToSide : MonoBehaviour {
 //        }
 
 		if (trigger.gameObject.tag == "Player") {
-        	player.Damage(1);
-        	StartCoroutine(player.Knockback(0.01f, 350, player.transform.position));
+			if (!player.isInvincible) {
+				player.isInvincible = true;
+	        	player.Damage(1);
+	        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
+	        	Invoke("notInvincible", 0.5f);
+
+			}
         }
     }
 
@@ -56,3 +71,4 @@ public class EnemySideToSide : MonoBehaviour {
 
 
 }
+

@@ -5,7 +5,9 @@ using UnityEngine;
 public class AdventurerAnimation : MonoBehaviour {
 
 	private LevelManager levelManager;
+	public bool isInvincible = false;
 
+	private bool colliding = false;
 	//ANIMATION
 	public float maxSpeed = 10f;
 	bool facingRight = true;
@@ -92,9 +94,9 @@ public class AdventurerAnimation : MonoBehaviour {
 			print("Collision is happening with win item");	
 			anim.SetBool("won", true);
 		}
-//		if (collision.gameObject.tag == "Enemy") {
-//			anim.SetBool("hurt", true);
-//		}
+		if (collision.gameObject.tag == "Tiles") {
+			print("hitting tiles");
+		}
 	}
 
 	void Flip () {
@@ -116,6 +118,7 @@ public class AdventurerAnimation : MonoBehaviour {
 		gameObject.GetComponent<Animation>().Play("hurt");
 		print("Animation for hurt played");
 	}
+	//KNOCKBACK
 
 	public IEnumerator Knockback (float knockDuration, float knockPower, Vector3 knockDirection) {
 		float timer = 0;
@@ -129,6 +132,7 @@ public class AdventurerAnimation : MonoBehaviour {
 		yield return 0;
 	}
 
+	//END KNOCKBACK
 	private void HandleLayers () {
 		if (!isGrounded) {
 			anim.SetLayerWeight(1, 1);
