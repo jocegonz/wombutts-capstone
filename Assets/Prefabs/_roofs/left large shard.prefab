@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4959855864344790}
-  - component: {fileID: 68991580935173608}
   m_Layer: 0
   m_Name: left large shard
   m_TagString: Untagged
@@ -150,8 +149,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1109759034613588}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.68, y: 6.73, z: 0}
-  m_LocalScale: {x: 1.02, y: 1, z: 1}
+  m_LocalPosition: {x: -9.6482, y: 6.73, z: 0}
+  m_LocalScale: {x: 1.0216783, y: 1, z: 1}
   m_Children:
   - {fileID: 4142305684841176}
   - {fileID: 4140520393225764}
@@ -160,31 +159,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!68 &68991580935173608
-EdgeCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1109759034613588}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 3.9, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -2.3, y: -0.02}
-  - {x: -2.26, y: -1.74}
-  - {x: -1.45, y: -1.49}
-  - {x: -1.31, y: -2.14}
-  - {x: -0.79, y: -1.79}
-  - {x: -0.37, y: -2.91}
-  - {x: 0.67, y: -2.07}
-  - {x: 0.82, y: -2.7}
-  - {x: 0.88, y: 0}
-  - {x: -2.3, y: 0}
 --- !u!212 &212166308827238076
 SpriteRenderer:
   m_ObjectHideFlags: 1

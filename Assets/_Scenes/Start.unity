@@ -421,6 +421,21 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 212811709029143766, guid: 5592c80384f4b429cb579d300f019019,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212811709029143766, guid: 5592c80384f4b429cb579d300f019019,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212811709029143766, guid: 5592c80384f4b429cb579d300f019019,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5592c80384f4b429cb579d300f019019, type: 2}
   m_IsPrefabParent: 0
@@ -643,7 +658,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cb10e2e27e77f4e9fa472e158eb10f10, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.52
+  m_Volume: 0.322
   m_Pitch: 1
   Loop: 1
   Mute: 0

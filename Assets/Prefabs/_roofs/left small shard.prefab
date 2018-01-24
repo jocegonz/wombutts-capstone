@@ -35,7 +35,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4531672896919552}
-  - component: {fileID: 68936277042372046}
   m_Layer: 0
   m_Name: left small shard
   m_TagString: Untagged
@@ -70,25 +69,6 @@ Transform:
   m_Father: {fileID: 4531672896919552}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!68 &68936277042372046
-EdgeCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1794424859877766}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1, y: 1.6}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -0.95, y: 0.02}
-  - {x: 0.48, y: -1.33}
-  - {x: 0.47, y: 0.01}
-  - {x: -0.88, y: 0.01}
 --- !u!212 &212400966804619702
 SpriteRenderer:
   m_ObjectHideFlags: 1

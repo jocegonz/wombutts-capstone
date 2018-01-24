@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AdventurerAnimation : MonoBehaviour {
-
+	private AudioSource audio;
 	private LevelManager levelManager;
 	public bool isInvincible = false;
 
@@ -32,6 +32,8 @@ public class AdventurerAnimation : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		audio = GetComponent<AudioSource>();
+
 		rb = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
 
@@ -92,15 +94,16 @@ public class AdventurerAnimation : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D collision) {
+	void OnCollisionEnter2D (Collision2D collision)
+	{
 		
 		if (collision.gameObject.tag == "Win") {
-			print("Collision is happening with win item");	
-			anim.SetBool("won", true);
+			print ("Collision is happening with win item");	
+			anim.SetBool ("won", true);
 		}
-//		if (collision.gameObject.tag == "Enemy") {
-//			AudioSource.PlayClipAtPoint (hurt, transform.position);
-//		}
+		if (collision.gameObject.tag == "Tiles") {
+			audio.Play();
+		}
 	}
 
 

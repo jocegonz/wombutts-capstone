@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemySideToSide : MonoBehaviour {
     public int EnemySpeed;
     public int xMoveDirection;
+    bool facingRight = true;
 
     private Rigidbody2D body;
     public Rigidbody2D Body {
@@ -28,16 +29,16 @@ public class EnemySideToSide : MonoBehaviour {
     }
 
     void OnCollisionEnter2D (Collision2D collision) {
-//        if (collision.gameObject.tag != "Player") {
+        if (collision.gameObject.tag != "Player") {
             Flip();
-//        }
+        }
 
 
 		if (collision.gameObject.tag == "Player") {
 			if (!player.isInvincible) {
 				player.isInvincible = true;
 	        	player.Damage(1);
-	        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
+//	        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
 	        	audio.Play();
 	        	Invoke("notInvincible", 0.5f);
 
@@ -58,7 +59,7 @@ public class EnemySideToSide : MonoBehaviour {
 			if (!player.isInvincible) {
 				player.isInvincible = true;
 	        	player.Damage(1);
-	        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
+//	        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
 	        	Invoke("notInvincible", 0.5f);
 
 			}
@@ -66,6 +67,11 @@ public class EnemySideToSide : MonoBehaviour {
     }
 
     void Flip (){
+		facingRight =! facingRight;
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
+
         if (xMoveDirection > 0) {
             xMoveDirection = -1;
         } else {
