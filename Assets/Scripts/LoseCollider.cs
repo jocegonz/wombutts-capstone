@@ -11,9 +11,11 @@ public class LoseCollider : MonoBehaviour {
 	}
 
 	IEnumerator OnTriggerEnter2D(Collider2D trigger) {
-		yield return new WaitForSeconds(.5f);
+		if (trigger.gameObject.tag == "Player") {
+			yield return new WaitForSeconds(.5f);
 
-		levelManager.LoadLevel("Lose");
+			levelManager.LoadLevel("Lose");
+		}
 	}
 
 	IEnumerator OnCollisionEnter2D(Collision2D collision) {
