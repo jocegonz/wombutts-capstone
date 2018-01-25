@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AdventurerAnimation : MonoBehaviour {
-	public AudioSource audio;
+	private AudioSource walkAudio;
 	private LevelManager levelManager;
 	public bool isInvincible = false;
 
-	private bool frozen = false;
+	private bool frozen;
 
 	//ANIMATION
 	public float maxSpeed = 10f;
@@ -32,7 +32,8 @@ public class AdventurerAnimation : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		audio = GetComponent<AudioSource>();
+		frozen = false;
+		walkAudio = GetComponent<AudioSource>();
 
 		rb = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
@@ -46,35 +47,67 @@ public class AdventurerAnimation : MonoBehaviour {
 	void FixedUpdate ()
 	{	
 
-		if (rb.velocity.y < 0){
-			anim.SetBool("landing", true);
+		if (rb.velocity.y < 0) {
+			anim.SetBool ("landing", true);
 		}
 
-//		x-axis
 		float move = Input.GetAxis ("Horizontal");
+		isGrounded = IsGrounded ();
+		anim.SetFloat ("Speed", Mathf.Abs (move));
 
 		if (frozen) {
 			move = 0;
-		 	rb.velocity = new Vector2 (0, 0);
-//			anim.SetLayerWeight(1, 0);
-//			isGrounded= false;
-		}
+			rb.velocity = new Vector2 (0, 0);
 
-		isGrounded = IsGrounded();
-//		Start running
-		anim.SetFloat ("Speed", Mathf.Abs (move));
-		if (isGrounded || airControl){
+
+		} else if (isGrounded || airControl) {
 			rb.velocity = new Vector2 (move * maxSpeed, rb.velocity.y);
+
+			if (move > 0 &&! facingRight) {
+			Flip();
+			} else if (move < 0 && facingRight) {
+			Flip();
+			}
 		}
 
-		if (move > 0 &&! facingRight && !frozen) {
-			Flip();
-		} else if (move < 0 && facingRight && !frozen) {
-			Flip();
-		}
+
+
+
+
+
 
 		HandleLayers();
 		ResetValues();
+
+//		if (rb.velocity.y < 0) {
+//			anim.SetBool ("landing", true);
+//		}
+//
+////		x-axis
+//		float move = Input.GetAxis ("Horizontal");
+//
+//		if (frozen) {
+//			move = 0;
+//			rb.velocity = new Vector2 (0, 0);
+////			anim.SetLayerWeight(1, 0);
+////			isGrounded= false;
+//		} 
+//
+//		isGrounded = IsGrounded();
+////		Start running
+//		anim.SetFloat ("Speed", Mathf.Abs (move));
+//		if (isGrounded || airControl){
+//			rb.velocity = new Vector2 (move * maxSpeed, rb.velocity.y);
+//		}
+//
+//		if (move > 0 &&! facingRight && !frozen) {
+//			Flip();
+//		} else if (move < 0 && facingRight && !frozen) {
+//			Flip();
+//		}
+//
+//		HandleLayers();
+//		ResetValues();
 
 	}
 
@@ -111,7 +144,7 @@ public class AdventurerAnimation : MonoBehaviour {
 			anim.SetBool ("won", true);
 		}
 		if (collision.gameObject.tag == "Tiles") {
-			audio.Play();
+			walkAudio.Play();
 		}
 	}
 
@@ -128,28 +161,21 @@ public class AdventurerAnimation : MonoBehaviour {
 
 	public void Damage(int dmg) {
 		currentHealth -= dmg;
-//		anim.SetBool("hurt", true);
-//		gameObject.GetComponent<Animation>().Play("hurt");
-
-//		gameObject.GetComponent<Animation>().wrapMode = WrapMode.Once;
 		gameObject.GetComponent<Animation>().Play("hurt");
-		print("Animation for hurt played");
-	}
-	//KNOCKBACK
-
-	public IEnumerator Knockback (float knockDuration, float knockPower, Vector3 knockDirection) {
-		float timer = 0;
-
-		while (knockDuration > timer) {
-			timer += Time.deltaTime;
-
-			rb.AddForce(new Vector3(knockDirection.x * -100, knockDirection.y * knockPower, transform.position.z));
-		}
-
-		yield return 0;
 	}
 
-	//END KNOCKBACK
+	//not currently being used-- makes screen jolt too much
+//	public IEnumerator Knockback (float knockDuration, float knockPower, Vector3 knockDirection) {
+//		float timer = 0;
+//
+//		while (knockDuration > timer) {
+//			timer += Time.deltaTime;
+//
+//			rb.AddForce(new Vector3(knockDirection.x * -100, knockDirection.y * knockPower, transform.position.z));
+//		}
+//		yield return 0;
+//	}
+
 	private void HandleLayers () {
 		if (!isGrounded) {
 			anim.SetLayerWeight(1, 1);

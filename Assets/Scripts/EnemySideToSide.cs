@@ -15,12 +15,12 @@ public class EnemySideToSide : MonoBehaviour {
         }
     } 
 
-    private AudioSource audio;
+    private AudioSource hurtAudio;
     //damage script
     private AdventurerAnimation player;
 
     void Start () {
-		audio = GetComponent<AudioSource>();
+		hurtAudio = GetComponent<AudioSource>();
     	player = GameObject.FindGameObjectWithTag("Player").GetComponent<AdventurerAnimation>();
     }
 
@@ -39,7 +39,7 @@ public class EnemySideToSide : MonoBehaviour {
 				player.isInvincible = true;
 	        	player.Damage(1);
 //	        	StartCoroutine(player.Knockback(0.02f, 350, player.transform.position));
-	        	audio.Play();
+	        	hurtAudio.Play();
 	        	Invoke("notInvincible", 0.5f);
 
 			}
